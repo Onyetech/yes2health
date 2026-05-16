@@ -629,7 +629,35 @@ document.addEventListener('DOMContentLoaded', function() {
         setInterval(createParticle, 800);
     }
 
-    
+    (function () {
+        const modal    = document.getElementById('video-modal');
+        const video    = document.getElementById('product-video');
+        const openBtn  = document.getElementById('open-video-modal');
+        const closeBtn = document.getElementById('close-video-modal');
+        const backdrop = document.getElementById('video-modal-backdrop');
+
+        function openModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            video.play();
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            video.pause();
+            video.currentTime = 0;
+        }
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        backdrop.addEventListener('click', closeModal);
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+        });
+    })();
+
     // ============================================
     // INTERACTIVE ORB EFFECT
     // ============================================
