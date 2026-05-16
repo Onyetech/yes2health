@@ -2549,6 +2549,7 @@ section {
     gap: 14px;
     cursor: pointer;
     font-family: inherit;
+    padding: 10px 32px 10px 14px;
 }
 
 .btn-video:hover {
@@ -2649,6 +2650,7 @@ section {
     cursor: pointer;
     transition: var(--transition);
     color: var(--white);
+    z-index: 10;
 }
 
 .video-modal-close:hover {
@@ -2664,11 +2666,9 @@ section {
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 168, 83, 0.2);
     background: #000;
     aspect-ratio: 16 / 9;
-    max-height: 80vh;
+    max-height: calc(100vh - 120px);
     margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
 }
 
 @media (max-width: 768px) {
@@ -2678,6 +2678,9 @@ section {
 }
 
 .video-modal-inner video {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: block;
@@ -2690,6 +2693,11 @@ section {
     }
 
     .video-modal-inner {
-        max-height: 75vh;
+        max-height: calc(100vh - 100px);
+    }
+    
+    .video-modal-close {
+        top: -44px;
+        right: 0;
     }
 }
