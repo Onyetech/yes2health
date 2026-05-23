@@ -2960,26 +2960,14 @@ section {
     margin-bottom: 2rem !important;
 }
 
+
 /* ============================================ */
-/* MOBILE LOGO ALIGNMENT */
+/* ORDER BUTTON NO-WRAP FIX */
 /* ============================================ */
-@media (max-width: 768px) {
-    .header .container {
-        position: relative;
-    }
-    
-    .header .logo {
-        /* Move the logo closer to the center by giving it a left margin */
-        margin-left: 12%; 
-        display: flex;
-        align-items: center;
-    }
-    
-    .logo img {
-        height: 38px !important; /* Slightly larger for better balance */
-    }
-    
-    .header.scrolled .logo img {
-        height: 32px !important;
-    }
+.order-btn {
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* small gap between text and SVG icon */
 }
