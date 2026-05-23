@@ -678,5 +678,85 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // ============================================
+    // PURCHASE MODAL LOGIC
+    // ============================================
+    const purchaseModal = document.getElementById('purchase-modal');
+    const purchaseProductInput = document.getElementById('purchase-product');
+    const purchasePriceInput = document.getElementById('purchase-price');
+    const purchaseQuantityInput = document.getElementById('purchase-quantity');
+    const closePurchaseModal = document.getElementById('close-purchase-modal');
+    const purchaseBackdrop = document.getElementById('purchase-modal-backdrop');
+    const orderBtns = document.querySelectorAll('.order-btn');
+    
+    let currentBasePrice = 0;
+
+    function formatNaira(amount) {
+        return 'N' + amount.toLocaleString('en-NG');
+    }
+
+    function openPurchaseModal(product, priceStr) {
+        if (!purchaseModal) return;
+        
+        // Extract numeric value from 'N5,200'
+        currentBasePrice = parseInt(priceStr.replace(/[^0-9]/g, ''), 10) || 0;
+        
+        purchaseProductInput.value = product;
+        purchasePriceInput.value = priceStr;
+        if(purchaseQuantityInput) purchaseQuantityInput.value = 1;
+        
+        // Reset form visibility and messages
+        const formEl = document.getElementById('purchase-form');
+        const successMsgEl = document.querySelector('[data-fs-success-purchase]');
+        if(formEl) formEl.style.display = 'block';
+        if(successMsgEl) successMsgEl.innerHTML = '';
+        
+        purchaseModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function updateTotalPrice() {
+        if (!purchaseQuantityInput || !purchasePriceInput) return;
+        const qty = parseInt(purchaseQuantityInput.value, 10) || 1;
+        const total = currentBasePrice * qty;
+        purchasePriceInput.value = formatNaira(total);
+    }
+
+    if (purchaseQuantityInput) {
+        purchaseQuantityInput.addEventListener('input', updateTotalPrice);
+        purchaseQuantityInput.addEventListener('change', updateTotalPrice);
+    }
+
+    function closePurchaseModalFunc() {
+        if (!purchaseModal) return;
+        
+        purchaseModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (orderBtns.length > 0) {
+        orderBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const product = this.getAttribute('data-product');
+                const price = this.getAttribute('data-price');
+                openPurchaseModal(product, price);
+            });
+        });
+    }
+
+    if (closePurchaseModal) {
+        closePurchaseModal.addEventListener('click', closePurchaseModalFunc);
+    }
+    
+    if (purchaseBackdrop) {
+        purchaseBackdrop.addEventListener('click', closePurchaseModalFunc);
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && purchaseModal && purchaseModal.classList.contains('active')) {
+            closePurchaseModalFunc();
+        }
+    });
     console.log('YES2HEALTH BEAUTY website initialized successfully!');
 });

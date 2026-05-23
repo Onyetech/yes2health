@@ -2701,3 +2701,261 @@ section {
         right: 0;
     }
 }
+
+/* ============================================ */
+/* PURCHASE MODAL & PRICE TAG STYLES */
+/* ============================================ */
+
+.price-tag {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--color-accent);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 700;
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.order-btn {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.order-btn.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+}
+
+.order-btn.btn-primary:hover {
+    background: var(--color-primary-dark);
+}
+
+.purchase-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.purchase-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.purchase-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+}
+
+.purchase-modal-container {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh; /* Prevents modal from clipping off screen */
+    overflow-y: auto; /* Allows scrolling inside modal if needed */
+    background: var(--color-dark-lighter, #1e2022);
+    border-radius: 16px;
+    z-index: 1;
+    transform: translateY(30px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    color: var(--color-text, #e2e8f0);
+}
+
+/* Custom scrollbar for the modal */
+.purchase-modal-container::-webkit-scrollbar {
+    width: 8px;
+}
+.purchase-modal-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+.purchase-modal-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+.purchase-modal-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.purchase-modal.active .purchase-modal-container {
+    transform: translateY(0);
+}
+
+.purchase-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.purchase-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.purchase-modal-inner h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.purchase-modal-inner .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.purchase-modal-inner .form-group input,
+.purchase-modal-inner .form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-family: inherit;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.purchase-modal-inner .form-group input:focus,
+.purchase-modal-inner .form-group textarea:focus {
+    border-color: var(--color-accent, #d4af37);
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.purchase-modal-inner .form-group input[readonly] {
+    background: rgba(0, 0, 0, 0.2);
+    cursor: not-allowed;
+    color: var(--color-accent, #d4af37);
+    font-weight: 600;
+}
+
+.purchase-modal-inner .btn-primary {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* ============================================ */
+/* PURCHASE MODAL ENHANCEMENTS */
+/* ============================================ */
+.modal-header-classic {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.modal-header-classic h3 {
+    font-size: 2rem !important;
+    margin-bottom: 0.5rem !important;
+    color: #ffffff !important;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
+}
+
+.modal-header-classic p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header-classic .decorative-line {
+    margin: 0 auto;
+    width: 60px;
+    height: 3px;
+    background: var(--color-accent, #d4af37);
+    border-radius: 2px;
+}
+
+.purchase-modal-inner label {
+    color: #ffffff !important;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.purchase-modal-inner .form-group input,
+.purchase-modal-inner .form-group textarea {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.purchase-modal-inner .form-group input::placeholder,
+.purchase-modal-inner .form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.purchase-modal-inner .form-group input[readonly] {
+    background: rgba(0, 0, 0, 0.3) !important;
+    color: var(--color-accent, #d4af37) !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+}
+
+/* ============================================ */
+/* PURCHASE MODAL: PRODUCT & PRICE TEXT DISPLAY */
+/* ============================================ */
+.purchase-modal-inner label[for="purchase-product"],
+.purchase-modal-inner label[for="purchase-price"] {
+    display: none !important;
+}
+
+.purchase-modal-inner #purchase-product,
+.purchase-modal-inner #purchase-price {
+    background: transparent !important;
+    border: none !important;
+    text-align: center !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    outline: none !important;
+    pointer-events: none !important; /* Prevents text cursor */
+}
+
+.purchase-modal-inner #purchase-product {
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+    color: var(--color-accent, #d4af37) !important;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 0.2rem !important;
+}
+
+.purchase-modal-inner #purchase-price {
+    font-size: 1.2rem !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    margin-bottom: 2rem !important;
+}
