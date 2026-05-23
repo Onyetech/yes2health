@@ -1,4 +1,4 @@
-/**
+﻿/**
  * YES2HEALTH BEAUTY - Main JavaScript
  * Premium Quantum Energy Landing Page
  */
@@ -692,7 +692,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentBasePrice = 0;
 
     function formatNaira(amount) {
-        return 'N' + amount.toLocaleString('en-NG');
+        return '\u20A6' + amount.toLocaleString('en-NG');
     }
 
     function openPurchaseModal(product, priceStr) {
