@@ -2971,3 +2971,89 @@ section {
     justify-content: center;
     gap: 8px; /* small gap between text and SVG icon */
 }
+
+
+/* Premium Action Row Inline Layout */
+.action-row-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.2rem;
+    margin-top: 1rem;
+    flex-wrap: nowrap;
+}
+.price-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-wrap: nowrap;
+}
+.old-price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.old-price-text {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+    white-space: nowrap;
+}
+.discount-badge {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+.new-price-text {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #eab308;
+    line-height: 1;
+    white-space: nowrap;
+}
+.order-btn-inline {
+    margin: 0;
+    padding: 0.6rem 0.8rem;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+@media (max-width: 480px) {
+    .old-price-text { font-size: 0.75rem; }
+    .discount-badge { font-size: 0.55rem; padding: 0.1rem 0.25rem; }
+    .new-price-text { font-size: 0.95rem; }
+    .order-btn-inline {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    .order-btn-inline svg {
+        width: 16px;
+        height: 16px;
+    }
+    .price-inline { gap: 0.15rem; }
+    .old-price-wrapper { gap: 0.15rem; }
+}
+
+
+/* Flexbox fixes for equal height product cards */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.product-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.action-row-inline {
+    margin-top: auto;
+}
+
