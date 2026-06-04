@@ -1,4 +1,4 @@
-﻿/**
+/**
  * YES2HEALTH BEAUTY - Main JavaScript
  * Premium Quantum Energy Landing Page
  */
@@ -682,54 +682,133 @@ document.addEventListener('DOMContentLoaded', function() {
     // PURCHASE MODAL LOGIC
     // ============================================
     const purchaseModal = document.getElementById('purchase-modal');
-    const purchaseProductInput = document.getElementById('purchase-product');
     const purchasePriceInput = document.getElementById('purchase-price');
-    const purchaseQuantityInput = document.getElementById('purchase-quantity');
     const closePurchaseModal = document.getElementById('close-purchase-modal');
     const purchaseBackdrop = document.getElementById('purchase-modal-backdrop');
     const orderBtns = document.querySelectorAll('.order-btn');
+    const shopNowBtn = document.getElementById('shop-now-cta');
+    const totalPriceDisplay = document.getElementById('total-price-display');
+    const calcTotalPrice = document.getElementById('calc-total-price');
+    const productCheckboxes = document.querySelectorAll('.product-checkbox');
+    const productQuantities = document.querySelectorAll('.product-qty');
     
-    let currentBasePrice = 0;
-
     function formatNaira(amount) {
         return '\u20A6' + amount.toLocaleString('en-NG');
     }
 
-    function openPurchaseModal(product, priceStr) {
+    function updateTotalPrice() {
+        let total = 0;
+        
+        productCheckboxes.forEach((cb, index) => {
+            const qtyInput = productQuantities[index];
+            if (cb.checked) {
+                const price = parseInt(cb.getAttribute('data-price'), 10) || 0;
+                const qty = parseInt(qtyInput.value, 10) || 1;
+                total += price * qty;
+            }
+        });
+        
+        if (total > 0) {
+            totalPriceDisplay.style.display = 'block';
+            calcTotalPrice.textContent = formatNaira(total);
+            purchasePriceInput.value = formatNaira(total);
+        } else {
+            totalPriceDisplay.style.display = 'none';
+            purchasePriceInput.value = '';
+        }
+    }
+
+    productCheckboxes.forEach((cb, index) => {
+        cb.addEventListener('change', function() {
+            const qtyInput = productQuantities[index];
+            if (this.checked) {
+                qtyInput.disabled = false;
+                qtyInput.style.display = 'block';
+            } else {
+                qtyInput.disabled = true;
+                qtyInput.style.display = 'none';
+            }
+            updateTotalPrice();
+        });
+    });
+
+    productQuantities.forEach(qtyInput => {
+        qtyInput.addEventListener('input', updateTotalPrice);
+        qtyInput.addEventListener('change', updateTotalPrice);
+    });
+
+    function openPurchaseModal(productValue) {
         if (!purchaseModal) return;
         
-        // Extract numeric value from 'N5,200'
-        currentBasePrice = parseInt(priceStr.replace(/[^0-9]/g, ''), 10) || 0;
-        
-        purchaseProductInput.value = product;
-        purchasePriceInput.value = priceStr;
-        if(purchaseQuantityInput) purchaseQuantityInput.value = 1;
-        
-        // Reset form visibility and messages
+        // Reset form messages
         const formEl = document.getElementById('purchase-form');
         const successMsgEl = document.querySelector('[data-fs-success-purchase]');
-        if(formEl) formEl.style.display = 'block';
+        if(formEl) {
+            formEl.reset();
+            formEl.style.display = 'block';
+        }
         if(successMsgEl) successMsgEl.innerHTML = '';
+        
+        // Pre-select product if provided
+        productCheckboxes.forEach((cb, index) => {
+            const qtyInput = productQuantities[index];
+            if (productValue) {
+                cb.checked = (cb.value === productValue);
+            } else {
+                cb.checked = false;
+            }
+            
+            // Trigger visual update for quantity inputs
+            if (cb.checked) {
+                qtyInput.disabled = false;
+                qtyInput.style.display = 'block';
+            } else {
+                qtyInput.disabled = true;
+                qtyInput.style.display = 'none';
+            }
+        });
+        
+        updateTotalPrice();
         
         purchaseModal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        
+        // Always start with the dropdown closed
+        const productGroup = document.getElementById('purchase-product-group');
+        const productDropdownToggle = document.getElementById('product-dropdown-toggle');
+        if (productGroup && productDropdownToggle) {
+            productGroup.classList.add('collapsed');
+            const icon = productDropdownToggle.querySelector('.dropdown-icon');
+            productGroup.style.maxHeight = '0';
+            productGroup.style.opacity = '0';
+            productGroup.style.padding = '0 10px';
+            if (icon) {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
     }
 
-    function updateTotalPrice() {
-        if (!purchaseQuantityInput || !purchasePriceInput) return;
-        const qty = parseInt(purchaseQuantityInput.value, 10) || 1;
-        const total = currentBasePrice * qty;
-        purchasePriceInput.value = formatNaira(total);
+    const productDropdownToggle = document.getElementById('product-dropdown-toggle');
+    const productGroup = document.getElementById('purchase-product-group');
+    if (productDropdownToggle && productGroup) {
+        productDropdownToggle.addEventListener('click', function() {
+            productGroup.classList.toggle('collapsed');
+            const icon = productDropdownToggle.querySelector('.dropdown-icon');
+            if (productGroup.classList.contains('collapsed')) {
+                productGroup.style.maxHeight = '0';
+                productGroup.style.opacity = '0';
+                productGroup.style.padding = '0 10px';
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                productGroup.style.maxHeight = '350px';
+                productGroup.style.opacity = '1';
+                productGroup.style.padding = '10px';
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
+        });
     }
-
-    if (purchaseQuantityInput) {
-        purchaseQuantityInput.addEventListener('input', updateTotalPrice);
-        purchaseQuantityInput.addEventListener('change', updateTotalPrice);
-    }
-
     function closePurchaseModalFunc() {
         if (!purchaseModal) return;
-        
         purchaseModal.classList.remove('active');
         document.body.style.overflow = '';
     }
@@ -739,9 +818,15 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const product = this.getAttribute('data-product');
-                const price = this.getAttribute('data-price');
-                openPurchaseModal(product, price);
+                openPurchaseModal(product);
             });
+        });
+    }
+
+    if (shopNowBtn) {
+        shopNowBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openPurchaseModal(null);
         });
     }
 
