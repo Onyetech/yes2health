@@ -1,0 +1,23 @@
+{
+  "name": "YES2HEALTH BEAUTY",
+  "short_name": "YES2HEALTH",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "description": "Premium Quantum Energy Products",
+  "icons": [
+    {
+      "src": "images/favicon.png",
+      "sizes": "192x192 any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/logo.png",
+      "sizes": "512x512 any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
