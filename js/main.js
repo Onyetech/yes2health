@@ -442,6 +442,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
             `;
 
+            const closeBtn = document.createElement('div');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.cssText = `
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                color: #fff;
+                font-size: 40px;
+                font-weight: bold;
+                cursor: pointer;
+                z-index: 10002;
+                transition: color 0.3s;
+            `;
+            closeBtn.onmouseover = function() { this.style.color = 'var(--primary-gold)'; };
+            closeBtn.onmouseout = function() { this.style.color = '#fff'; };
+            
+            lightbox.appendChild(closeBtn);
             lightbox.appendChild(lightboxImg);
             document.body.appendChild(lightbox);
             document.body.style.overflow = 'hidden';
