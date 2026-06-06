@@ -299,13 +299,13 @@ section {
 }
 
 .logo img {
-    height: 45px;
+    height: 38px;
     width: auto;
     transition: var(--transition);
 }
 
 .header.scrolled .logo img {
-    height: 40px;
+    height: 34px;
 }
 
 .nav-menu {
@@ -1998,7 +1998,7 @@ section {
 }
 
 .footer-brand .logo img {
-    height: 40px;
+    height: 34px;
 }
 
 .footer h4 {
@@ -2243,11 +2243,11 @@ section {
     }
 
     .logo img {
-        height: 32px;
+        height: 28px;
     }
 
     .header.scrolled .logo img {
-        height: 28px;
+        height: 24px;
     }
 
     .nav-menu {
@@ -2355,7 +2355,7 @@ section {
 
     /* Footer Logo Mobile */
     .footer-brand .logo img {
-        height: 30px;
+        height: 26px;
     }
 
     .about-features {
