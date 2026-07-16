@@ -1072,7 +1072,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     
     <!-- Custom Vanilla JS Form Submission -->
-    <script src="https://js.paystack.co/v1/inline.js"></script>
     <script>
         window.currentOrder = {
             email: '',
@@ -1080,33 +1079,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             name: '',
             phone: ''
         };
-
-        function payWithPaystack() {
-            if (window.currentOrder.amount <= 0) {
-                alert("Please select at least one product before paying.");
-                return;
-            }
-            let handler = PaystackPop.setup({
-                key: 'pk_test_2ad2e84d005f0662571071689986995c385de04d', // Replace with your public key if needed
-                email: window.currentOrder.email || 'customer@example.com',
-                amount: window.currentOrder.amount * 100, // Paystack requires amount in kobo
-                currency: 'NGN',
-                metadata: {
-                    custom_fields: [
-                        { display_name: "Name", variable_name: "name", value: window.currentOrder.name },
-                        { display_name: "Phone Number", variable_name: "phone", value: window.currentOrder.phone }
-                    ]
-                },
-                callback: function(response){
-                    document.getElementById('paymentRefText').textContent = response.reference;
-                    document.getElementById('paymentSuccessModal').classList.add('active');
-                },
-                onClose: function(){
-                    console.log('Payment popup closed');
-                }
-            });
-            handler.openIframe();
-        }
 
         async function handleFormSubmit(event, endpoint, successHtml, containerSelector, redirectUrl, isPurchase = false) {
             event.preventDefault();
@@ -1177,51 +1149,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <p style="color: #ffffff; font-size: 1.1rem; margin-bottom: 2rem; font-weight: 500;">Thank you! We have received your order details.</p>
                 
                 <div style="margin-bottom: 1rem;">
-                    <button onclick="payWithPaystack()" style="display: inline-block; background: #0ea5e9; color: #ffffff; padding: 14px 28px; border-radius: 8px; border: none; cursor: pointer; font-weight: 800; font-size: 1.15rem; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); letter-spacing: 0.5px; width: 100%; max-width: 300px; margin-bottom: 0.5rem;">Pay Now with Paystack</button>
-                    
-                    <p style="color: #9ca3af; font-size: 1.1rem; font-weight: 800; margin: 1.5rem 0; letter-spacing: 2px;">&mdash; OR &mdash;</p>
-                    
-                    <a href="https://wa.me/2349050735251?text=Hello%20YES2HEALTH%20BEAUTY,%20I've%20just%20placed%20an%20order%20and%20want%20to%20complete%20my%20payment." target="_blank" style="display: inline-block; background: #25D366; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 1.15rem; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); letter-spacing: 0.5px; width: 100%; max-width: 300px; box-sizing: border-box;">Message on WhatsApp</a>
+                    <a href="https://wa.me/2349050735251?text=Hello%20YES2HEALTH%20BEAUTY,%20I've%20just%20placed%20an%20order." target="_blank" style="display: inline-block; background: #25D366; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 1.15rem; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); letter-spacing: 0.5px; width: 100%; max-width: 300px; box-sizing: border-box;">Message on WhatsApp</a>
                 </div>
             </div>`;
 
             handleFormSubmit(e, 'https://formspree.io/f/mqejvzee', purchaseSuccessHtml, '[data-fs-success-purchase]', null, true);
         });
-        function copyPaymentRef() {
-            const refText = document.getElementById('paymentRefText').textContent;
-            navigator.clipboard.writeText(refText).then(() => {
-                const copyBtn = document.getElementById('copyRefBtn');
-                copyBtn.textContent = 'Copied!';
-                setTimeout(() => {
-                    copyBtn.textContent = 'Copy';
-                }, 2000);
-            });
-        }
-        
-        function closePaymentModalAndRedirect() {
-            document.getElementById('paymentSuccessModal').classList.remove('active');
-            window.location.href = 'thank-you.html';
-        }
     </script>
-
-    <!-- Payment Success Modal -->
-    <div id="paymentSuccessModal" class="purchase-modal">
-        <div class="purchase-modal-backdrop" onclick="closePaymentModalAndRedirect()"></div>
-        <div class="purchase-modal-container" style="max-width: 400px; text-align: center; padding: 2rem;">
-            <div class="modal-header-classic">
-                <h3 style="color: #4ade80;">Payment Complete!</h3>
-                <div class="decorative-line"></div>
-            </div>
-            <div class="purchase-modal-inner">
-                <p style="margin-bottom: 1rem; color: #e5e7eb;">Your payment reference is:</p>
-                <div style="background: #1f2937; padding: 10px; border-radius: 8px; border: 1px solid #374151; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
-                    <span id="paymentRefText" style="font-family: monospace; font-weight: bold; font-size: 1.1rem; color: #d4af37; overflow: hidden; text-overflow: ellipsis;"></span>
-                    <button id="copyRefBtn" onclick="copyPaymentRef()" style="background: #374151; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">Copy</button>
-                </div>
-                <button onclick="closePaymentModalAndRedirect()" class="btn btn-primary" style="width: 100%;">Continue</button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
 
