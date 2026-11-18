@@ -83,10 +83,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         menuBackdrop.addEventListener('click', closeMenu);
 
-        // Close menu when clicking on a link
+        // Close menu when clicking on a link, then scroll to the target
         const navLinks = navMenu.querySelectorAll('a');
         navLinks.forEach(function(link) {
-            link.addEventListener('click', closeMenu);
+            link.addEventListener('click', function() {
+                closeMenu();
+            });
         });
 
         // Close menu when clicking outside
@@ -102,13 +104,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
     document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
-            e.preventDefault();
             const targetId = this.getAttribute('href');
 
-            if (targetId === '#') return;
+            if (!targetId || targetId === '#') return;
 
             const targetElement = document.querySelector(targetId);
-            if (targetElement) {
+            if (!targetElement) return;
+
+            e.preventDefault();
+
+            const scrollToTarget = function() {
                 const headerHeight = header.offsetHeight;
                 const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
 
@@ -116,7 +121,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     top: targetPosition,
                     behavior: 'smooth'
                 });
-            }
+            };
+
+            // Defer so the mobile menu can close and restore body scroll first
+            requestAnimationFrame(function() {
+                requestAnimationFrame(scrollToTarget);
+            });
         });
     });
 
