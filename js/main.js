@@ -706,11 +706,29 @@ document.addEventListener('DOMContentLoaded', function() {
         function openModal(autoOpened) {
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            video.muted = false;
-            video.play().catch(function() {
-                // Autoplay with sound may be blocked on non-user-initiated opens;
-                // controls remain visible so the user can tap play/unmute.
-            });
+
+            // Start muted so autoplay is always permitted by the browser.
+            video.muted = true;
+            const playPromise = video.play();
+
+            if (playPromise && typeof playPromise.then === 'function') {
+                playPromise.then(function() {
+                    // Playback started. Try to unmute; if the browser blocks
+                    // unmuting without a user gesture, stay muted (still playing).
+                    if (!autoOpened) {
+                        video.muted = false;
+                    } else {
+                        video.muted = false;
+                        video.play().catch(function() {
+                            video.muted = true;
+                        });
+                    }
+                }).catch(function() {
+                    // Even muted playback failed; retry after the modal is visible.
+                    video.muted = true;
+                    setTimeout(function() { video.play().catch(function() {}); }, 100);
+                });
+            }
         }
 
         function closeModal() {
