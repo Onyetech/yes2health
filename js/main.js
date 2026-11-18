@@ -101,6 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ============================================
     // SMOOTH SCROLLING
+    // Rely on native anchor navigation + CSS scroll-behavior: smooth so it
+    // works reliably on mobile. We only close the mobile menu first, then let
+    // the browser jump to the target (offset handled via scroll-margin-top).
     // ============================================
     document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
@@ -111,22 +114,23 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetElement = document.querySelector(targetId);
             if (!targetElement) return;
 
-            e.preventDefault();
+            // If the mobile menu is open, close it and restore body scroll,
+            // then perform the scroll once the layout has settled.
+            if (navMenu && navMenu.classList.contains('active')) {
+                e.preventDefault();
+                if (menuToggle) menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                const menuBackdrop = document.querySelector('.nav-menu-backdrop');
+                if (menuBackdrop) menuBackdrop.classList.remove('active');
+                document.body.style.overflow = '';
 
-            const scrollToTarget = function() {
-                const headerHeight = header.offsetHeight;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            };
-
-            // Defer so the mobile menu can close and restore body scroll first
-            requestAnimationFrame(function() {
-                requestAnimationFrame(scrollToTarget);
-            });
+                setTimeout(function() {
+                    const headerHeight = header.offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }, 60);
+            }
+            // Otherwise let the native anchor + CSS smooth scrolling handle it.
         });
     });
 
